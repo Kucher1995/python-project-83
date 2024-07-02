@@ -21,7 +21,7 @@ def analyzer():
         messages=messages)
 
 
-@app.get('/urls')
+@app.route('/urls', methods=['get'])
 def show_urls():
     conn = db.create_connection()
     urls = db.get_url_check(conn)
@@ -33,7 +33,7 @@ def show_urls():
     ), 200
 
 
-@app.post('/urls')
+@app.route('/urls', methods=['post'])
 def add_url():
     url = request.form.get('url')
     errors = valid.validate_url(url)
@@ -68,7 +68,7 @@ def add_url():
     return redirect(url_for('show_url', id=id), 302)
 
 
-@app.get('/urls/<id>')
+@app.route('/urls/<id>', methods=['post'])
 def show_url(id):
     conn = db.create_connection()
     url = db.get_url(conn, id)
