@@ -68,7 +68,7 @@ def add_url():
     return redirect(url_for('show_url', id=id), 302)
 
 
-@app.route('/urls/<id>')
+@app.route('/urls/<id>', methods=['post', 'get'])
 def show_url(id):
     conn = db.create_connection()
     url = db.get_url(conn, id)
