@@ -97,3 +97,29 @@ def get_url_check(conn):
                         'last_data': '',
                         'status_code': ''})
     return res
+
+
+def add_url_check(conn, check_date):
+    with conn.cursor() as cur:
+        try:
+            cur.execute("""
+                INSERT INTO url_checks (
+                        url_id,
+                        status_code,
+                        h1,
+                        title,
+                        description)
+                VALUES (%s, %s, %s, %s, %s);
+                """,
+                        (check_date['url_id'],
+                        check_date['status_code'],
+                        check_date['h1'],
+                        check_date['title'],
+                        check_date['description'])
+                        )
+            conn.commit()
+        except psycopg2.Error:
+            logging.error(
+                "An error occurred while adding to the database 'url_checks'.",
+                exc_info=True)
+            raise psycopg2.Error('Error "url_checks"', status_code=500)

@@ -5,6 +5,7 @@ from flask import Flask, render_template, \
     flash, get_flashed_messages, abort
 from page_analyzer import dbase as db
 from page_analyzer import valid
+from page_analyzer import html
 
 
 app = Flask(__name__)
@@ -81,3 +82,50 @@ def show_url(id):
         messages=messages,
         checks=checks,
     )
+
+
+@app.route('/urls/<id>/checks', methods=['post'])
+def checks(id):
+    conn = db.create_connection()
+    url = db.get_url(conn, id)
+
+    response = html.get_response(url.name)
+    if not response:
+        app.logger.info(
+            f"""{url.name} An error occurred
+            while requesting the response URL.""")
+
+        flash('Произошла ошибка при проверке', 'error')
+
+        db.close(conn)
+
+        return redirect(url_for('show_url', id=id), 302)
+
+    status_code = response.status_code
+
+    check_data = html.get_check_result(response)
+    check_data.update({
+        'url_id': id,
+        'status_code': status_code,
+    })
+
+    app.logger.info(f'{url.name} The response was successfully received.')
+    flash('Страница успешно проверена', 'success')
+
+    try:
+        db.add_url_check(conn, check_data)
+    except Exception:
+        abort(500)
+    finally:
+        db.close(conn)
+
+    return redirect(url_for('show_url', id=id), 302)
+
+
+@app.errorhandler(500)
+def page_500(errors):
+    app.logger.info('An error 500 occurred.')
+    return render_template(
+        'errors/500.html',
+        errors=errors
+    ), 500
