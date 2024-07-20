@@ -69,7 +69,7 @@ def test_succes_add_url(client: FlaskClient):
 
     response = client.get('/urls/1')
     assert bytes('Страница успешно добавлена',
-                encoding='utf-8') in response.data
+                 encoding='utf-8') in response.data
 
     truncate_table_urls()
 
@@ -97,10 +97,10 @@ def test_url_check(client: FlaskClient):
     response = client.post('/urls/1/checks', follow_redirects=True)
 
     assert bytes('Страница успешно проверена',
-                encoding='utf-8') in response.data
+                 encoding='utf-8') in response.data
     assert bytes('Online programming school', encoding='utf-8') in response.data
     assert bytes('Programming education: online',
-                encoding='utf-8') in response.data
+                 encoding='utf-8') in response.data
     assert bytes('Author training programs', encoding='utf-8') in response.data
 
     truncate_table_urls()
@@ -134,6 +134,6 @@ def test_url_check_fail(client: FlaskClient):
     response = client.post('/urls/1/checks', follow_redirects=True)
 
     assert bytes('Произошла ошибка при проверке',
-                encoding='utf-8') in response.data
+                 encoding='utf-8') in response.data
 
     truncate_table_urls()

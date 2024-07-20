@@ -112,10 +112,10 @@ def add_url_check(conn, check_date):
                 VALUES (%s, %s, %s, %s, %s);
                 """,
                         (check_date['url_id'],
-                        check_date['status_code'],
-                        check_date['h1'],
-                        check_date['title'],
-                        check_date['description'])
+                            check_date['status_code'],
+                            check_date['h1'],
+                            check_date['title'],
+                            check_date['description'])
                         )
             conn.commit()
         except psycopg2.Error:
