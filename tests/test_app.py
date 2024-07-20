@@ -131,8 +131,7 @@ def test_url_check_fail(client: FlaskClient):
         "url": "https://dfgh.ru"
     })
 
-    response = client.post('/urls/1/checks',
-                            follow_redirects=True)
+    response = client.post('/urls/1/checks', follow_redirects=True)
 
     assert bytes('Произошла ошибка при проверке',
                 encoding='utf-8') in response.data
