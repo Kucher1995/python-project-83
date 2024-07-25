@@ -49,14 +49,14 @@ def add_url():
             messages=messages,
         ), 422
 
-    normalize_url = [valid.normalize_url(url)]
+    normalized_url = valid.normalized_url(url)
     conn = db.create_connection()
-    url = db.get_url_by_name(conn, normalize_url)
+    url = db.get_url_by_name(conn, normalized_url)
     if url:
         flash('Страница уже существует', 'info')
         id = url.id
     else:
-        id = db.add_url(conn, normalize_url)
+        id = db.add_url(conn, normalized_url)
         if id:
             app.logger.info(
                 f'{url} Writing data to the database was successful.'

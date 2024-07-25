@@ -13,6 +13,6 @@ def validate_url(url):
     return errors
 
 
-def normalize_url(url):
+def normalized_url(url):
     url = urlparse(url)
     return f'{url.scheme}://{url.netloc}'

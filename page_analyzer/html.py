@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 
 
-def get_check_result(response):
+def get_page_content(response):
     soup = BeautifulSoup(response.text, 'html.parser')
     h1 = soup.h1.string if soup.h1 else ''
     title = soup.title.string if soup.title else ''
