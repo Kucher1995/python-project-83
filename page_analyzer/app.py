@@ -49,7 +49,7 @@ def add_url():
             messages=messages,
         ), 422
 
-    normalized_url = valid.normalized_url(url)
+    normalized_url = [valid.normalized_url(url)]
     conn = db.create_connection()
     url = db.get_url_by_name(conn, normalized_url)
     if url:
@@ -89,7 +89,7 @@ def checks(id):
     conn = db.create_connection()
     url = db.get_url(conn, id)
 
-    response = html.get_response(url.name)
+    response = html.get_url_status(url.name)
     if not response:
         app.logger.info(
             f"""{url.name} An error occurred
@@ -103,7 +103,7 @@ def checks(id):
 
     status_code = response.status_code
 
-    check_data = html.get_check_result(response)
+    check_data = html.get_page_content(response)
     check_data.update({
         'url_id': id,
         'status_code': status_code,

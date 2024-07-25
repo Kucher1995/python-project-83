@@ -19,7 +19,7 @@ def get_page_content(response):
             }
 
 
-def get_response(url):
+def get_url_status(url):
     try:
         response = requests.get(url, timeout=1)
     except (requests.exceptions.RequestException,
